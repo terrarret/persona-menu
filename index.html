@@ -109,7 +109,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .hpsp-fill.sp{background:var(--sp);}
 
 /* ITEMS SCREEN */
-.item-list-wrap{overflow-y:auto;border:1px solid var(--border);border-radius:2px;background:rgba(0,0,0,.3);max-height:calc(100vh - 480px);}
+.item-list-wrap{overflow-y:auto;border:1px solid var(--border);border-radius:2px;background:rgba(0,0,0,.3);max-height:calc(100vh - 360px);}
 .item-list-head{display:grid;grid-template-columns:1fr 40px;background:#1a1a2e;padding:8px 14px;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;border-bottom:2px solid var(--purple);}
 .item-row{display:grid;grid-template-columns:1fr 40px;padding:9px 14px;cursor:pointer;transition:background .12s;border-bottom:1px solid rgba(255,255,255,.05);}
 .item-row:hover{background:rgba(123,63,192,.2);}
@@ -145,15 +145,11 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .sl-pip.max{background:var(--gold);}
 .sl-locked .sl-rank-box{background:var(--border);}
 .sl-locked .sl-name-txt{color:var(--textdim);}
-.sl-char-img{width:220px;min-width:220px;height:100%;max-height:380px;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
-.sl-char-img img{width:100%;height:100%;object-fit:contain;}
-.sl-char-img .no-img{color:var(--textdim);font-size:12px;text-align:center;}
+.bg-portrait{position:absolute;right:0;bottom:0;height:100%;width:55%;background-repeat:no-repeat;background-position:bottom right;background-size:contain;pointer-events:none;z-index:1;-webkit-mask-image:linear-gradient(to left, black 60%, transparent 100%);mask-image:linear-gradient(to left, black 60%, transparent 100%);}
 .sl-detail-panel{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:14px;margin-top:10px;}
 
 /* STATUS SCREEN */
-.status-char-img{width:260px;min-width:260px;height:320px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.status-char-img img{width:100%;height:100%;object-fit:contain;}
-.status-char-img .no-img{color:var(--textdim);font-size:12px;text-align:center;}
+/* status-char-img replaced by .bg-portrait */
 
 /* PERSONA DETAIL */
 .affinity-row{display:flex;gap:0;margin:10px 0;border-radius:4px;overflow:hidden;border:1px solid rgba(0,0,0,.5);}
@@ -186,7 +182,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .radar-stat-rank{font-size:12px;color:var(--gold);}
 
 /* QUEST SCREEN */
-.quest-scroll{overflow-y:auto;max-height:calc(100vh - 460px);border:1px solid var(--border);border-radius:2px;background:rgba(0,0,0,.4);}
+.quest-scroll{overflow-y:auto;max-height:calc(100vh - 340px);border:1px solid var(--border);border-radius:2px;background:rgba(0,0,0,.4);}
 .quest-header-row{display:grid;grid-template-columns:60px 1fr;background:#1a1a2e;padding:8px 14px;border-bottom:2px solid var(--purple);}
 .quest-header-no{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;}
 .quest-header-det{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;}
@@ -282,9 +278,9 @@ body.mobile-mode .char-row { flex: 1; min-width: 80px; font-size: 13px; padding:
 body.mobile-mode .screen-title { font-size: 26px; }
 body.mobile-mode div[style*="position:absolute"][style*="bottom:24px"] { position: relative !important; bottom: auto !important; left: auto !important; margin-top: 14px; text-align: center; }
 body.mobile-mode .item-list-wrap, body.mobile-mode .quest-scroll { max-height: 240px !important; }
-body.mobile-mode .sl-char-img { width: 100% !important; min-width: 0 !important; height: 200px !important; margin-top: 10px; }
+body.mobile-mode .bg-portrait { position: relative; width: 100% !important; height: 160px !important; -webkit-mask-image: none; mask-image: none; margin-bottom: 10px; }
 body.mobile-mode #screen-slink .p4-layout > div:last-child { margin-left: 0 !important; width: 100% !important; min-width: 0 !important; }
-body.mobile-mode .status-char-img { width: 100% !important; min-width: 0 !important; height: 220px !important; }
+
 body.mobile-mode .modal-box { min-width: 0; width: 94vw; padding: 18px 16px; }
 body.mobile-mode .modal-box.wide { min-width: 0; }
 body.mobile-mode .mgrid2, body.mobile-mode .mgrid5 { grid-template-columns: 1fr 1fr; }
@@ -321,6 +317,7 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
       <li><button class="nav-btn" onclick="showScreen('slink')" id="nb-slink"><span class="nav-icon">🔗</span><span>S.Link</span></button></li>
       <li><button class="nav-btn" onclick="showScreen('status')" id="nb-status"><span class="nav-icon">👤</span><span>Status</span></button></li>
       <li><button class="nav-btn" onclick="showScreen('quest')" id="nb-quest"><span class="nav-icon">📜</span><span>Quest</span></button></li>
+      <li><button class="nav-btn" onclick="showScreen('sheets')" id="nb-sheets"><span class="nav-icon">📝</span><span>Sheets</span></button></li>
       <li><button class="nav-btn" onclick="showScreen('system')" id="nb-system"><span class="nav-icon">⚙️</span><span>System</span></button></li>
     </ul>
     <div class="nav-foot" id="nav-foot-area">
@@ -343,10 +340,10 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
           <div class="sec-head" style="margin-bottom:12px;">Inventories</div>
           <div class="char-list" id="item-owner-list"></div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:600px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
             <div class="sec-head gold" id="item-list-title">Party Inventory</div>
-            <button class="btn gold admin-ctrl" onclick="openModal('m-add-item')">+ Add Item</button>
+            <button class="btn gold admin-ctrl" onclick="openAddItemModal()">+ Add Item</button>
           </div>
           <div style="flex:1;display:flex;gap:16px;min-height:0;">
             <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
@@ -378,7 +375,10 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
         <div class="p4-right">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div class="sec-head gold">Equipment</div>
-            <button class="btn gold admin-ctrl" id="equip-edit-btn" onclick="openEquipEdit()" style="display:none;">&#x270E; Edit</button>
+            <div style="display:flex;gap:6px;" id="equip-action-btns">
+              <button class="btn gold" id="equip-pick-btn" onclick="openEquipPicker()" style="display:none;">&#x1F392; Equip from Inventory</button>
+              <button class="btn gold admin-ctrl" id="equip-edit-btn" onclick="openEquipEdit()" style="display:none;">&#x270E; Define Stats</button>
+            </div>
           </div>
           <div class="equip-slots" id="equip-slots-area">
             <div style="color:var(--textdim);font-style:italic;font-size:14px;padding:20px;">Select a character to view equipment.</div>
@@ -393,62 +393,54 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
 
     <!-- ======= S.LINK SCREEN ======= -->
     <div class="screen" id="screen-slink">
-      <div class="p4-layout" style="padding:20px 40px 20px 20px;">
-        <div class="p4-left" style="flex:1;min-width:0;flex-direction:column;display:flex;overflow:hidden;">
+      <div class="p4-layout" style="padding:20px 40px 20px 20px;position:relative;">
+        <div id="sl-bg-img" class="bg-portrait"></div>
+        <div style="flex:1;min-width:0;max-width:560px;flex-direction:column;display:flex;overflow:hidden;position:relative;z-index:2;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <div class="sec-head">S.Link</div>
             <button class="btn gold admin-ctrl" onclick="openModal('m-add-sl')">+ Add</button>
           </div>
-          <div style="flex:1;overflow-y:auto;" id="sl-list-body"></div>
+          <div style="flex:1;overflow-y:auto;max-height:calc(100vh - 360px);" id="sl-list-body"></div>
           <div id="sl-detail" style="margin-top:10px;display:none;">
             <div class="sl-detail-panel" id="sl-detail-inner"></div>
           </div>
         </div>
-        <div style="width:220px;min-width:220px;display:flex;flex-direction:column;gap:10px;margin-left:16px;">
-          <div class="sl-char-img" id="sl-char-img-box" style="height:300px;">
-            <div class="no-img">Select a Social Link<br>to view character</div>
-          </div>
-          <div id="sl-char-name" style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--gold);text-align:center;text-transform:uppercase;"></div>
-        </div>
       </div>
-      <div style="position:absolute;bottom:24px;left:204px;">
+      <div style="position:absolute;bottom:24px;left:204px;z-index:3;">
         <div class="screen-title">S.Link</div>
-        <div class="screen-sub">View which Social Link?</div>
+        <div class="screen-sub" id="sl-char-name">View which Social Link?</div>
       </div>
     </div>
 
     <!-- ======= STATUS SCREEN ======= -->
     <div class="screen" id="screen-status">
-      <div class="p4-layout" style="padding:20px 40px 20px 20px;">
-        <div class="p4-left" style="flex-direction:column;align-items:center;gap:10px;flex-shrink:0;width:280px;">
-          <div class="status-char-img" id="status-char-img">
-            <div class="no-img">Select a character</div>
-          </div>
-          <div id="status-char-name" style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;color:var(--gold);text-transform:uppercase;text-align:center;"></div>
-          <div id="status-char-hpsp" style="width:100%;"></div>
-          <div class="admin-ctrl flex" style="gap:8px;margin-top:4px;" id="status-admin-btns">
+      <div class="p4-layout" style="padding:20px 40px 20px 20px;position:relative;">
+        <div id="status-bg-img" class="bg-portrait"></div>
+        <div style="width:300px;min-width:300px;flex-shrink:0;position:relative;z-index:2;">
+          <div id="status-char-hpsp" style="width:100%;margin-top:6px;"></div>
+          <div class="admin-ctrl flex" style="gap:8px;margin-top:8px;" id="status-admin-btns">
             <button class="btn gold" onclick="openCharEdit(selectedStatusChar)">&#x270E; Edit Stats</button>
           </div>
         </div>
-        <div class="p4-right" style="overflow-y:auto;">
+        <div style="flex:1;overflow-y:auto;max-width:480px;position:relative;z-index:2;padding-right:8px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div class="sec-head">Party Status</div>
-            <button class="btn gold admin-ctrl" onclick="openModal('m-add-char')">+ Add Character</button>
+            <button class="btn gold admin-ctrl" onclick="openAddCharChoice()">+ Add Character</button>
           </div>
           <div id="status-char-list" style="display:flex;flex-direction:column;gap:3px;"></div>
           <div id="status-char-detail" style="margin-top:14px;display:none;"></div>
         </div>
       </div>
-      <div style="position:absolute;bottom:24px;left:24px;">
+      <div style="position:absolute;bottom:24px;left:24px;z-index:3;">
         <div class="screen-title">Status</div>
-        <div class="screen-sub">View whose status?</div>
+        <div class="screen-sub" id="status-char-name">View whose status?</div>
       </div>
     </div>
 
     <!-- ======= QUEST SCREEN ======= -->
     <div class="screen" id="screen-quest">
       <div class="p4-layout" style="padding:20px 40px 20px 20px;">
-        <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:620px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <div>
               <span class="sec-head" style="margin-right:8px;margin-bottom:0;">Active</span>
@@ -473,6 +465,20 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
       <div style="position:absolute;bottom:24px;left:24px;">
         <div class="screen-title">Quest</div>
         <div class="screen-sub">Active &amp; completed quests</div>
+      </div>
+    </div>
+
+    <!-- ======= SHEETS SCREEN ======= -->
+    <div class="screen" id="screen-sheets">
+      <div class="p4-layout" style="padding:20px 40px 20px 20px;overflow-y:auto;align-items:flex-start;">
+        <div style="width:100%;max-width:640px;margin:0 auto;">
+          <div class="sec-head" style="margin-bottom:14px;">Character Sheet</div>
+          <div id="sheets-content"></div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:24px;left:24px;">
+        <div class="screen-title">Sheets</div>
+        <div class="screen-sub">Submit your character's basic info</div>
       </div>
     </div>
 
@@ -556,6 +562,20 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
             <button class="mbtn gold" onclick="setPlayerSession()">Save Session</button>
           </div>
 
+          <!-- GM: MANAGE WEAPON TYPES -->
+          <div class="system-panel admin-ctrl" id="sys-weapontypes-panel" style="width:100%;">
+            <div class="system-sub" style="font-size:18px;color:var(--text);font-family:'Oswald',sans-serif;font-weight:700;">Weapon Types</div>
+            <div style="color:var(--textdim);font-size:13px;margin:8px 0 16px;">Define the weapon types your characters can use (e.g. Knives, Naginata, Gloves). Each character is assigned one type when created, and can only equip weapons matching it.</div>
+            <div id="weapontypes-list" style="margin-bottom:14px;"></div>
+            <div class="mfield">
+              <label class="mlabel">New Weapon Type</label>
+              <div style="display:flex;gap:8px;">
+                <input class="minput" id="new-weapontype-input" placeholder="e.g. Naginata" style="flex:1;"/>
+                <button class="mbtn gold" onclick="addWeaponType()">Add</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -574,8 +594,23 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
     <div class="modal-title">Add Item</div>
     <button class="modal-x" onclick="closeModal('m-add-item')">&#x2715;</button>
     <div class="mfield"><label class="mlabel">Item Name</label><input class="minput" id="ai-name" placeholder="e.g. Medicine"/></div>
+    <div class="mfield"><label class="mlabel">Category</label><select class="minput" id="ai-cat" onchange="toggleEquipFieldsAdd()"></select></div>
     <div class="mfield"><label class="mlabel">Quantity</label><input class="minput" id="ai-qty" type="number" value="1" min="1"/></div>
     <div class="mfield"><label class="mlabel">Description</label><textarea class="minput" id="ai-desc" rows="3" placeholder="What does this item do?"></textarea></div>
+    <div id="ai-equip-fields" style="display:none;border:1px solid var(--border);border-radius:2px;padding:10px;margin-bottom:12px;background:rgba(0,0,0,.2);">
+      <div class="mfield"><label class="mlabel">Equipment Slot</label><select class="minput" id="ai-eqslot" onchange="toggleEquipStatFieldsAdd()">
+        <option value="weapon">Weapon</option><option value="armor">Armor</option><option value="acc">Accessory</option><option value="clothes">Clothes</option>
+      </select></div>
+      <div class="mfield" id="ai-weapontype-field"><label class="mlabel">Weapon Type</label><select class="minput" id="ai-weapontype"></select></div>
+      <div id="ai-eqstats-weapon" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="mfield"><label class="mlabel">Attack</label><input class="minput" id="ai-atk" type="number" value="0"/></div>
+        <div class="mfield"><label class="mlabel">Hit Rate</label><input class="minput" id="ai-hit" type="number" value="0"/></div>
+      </div>
+      <div id="ai-eqstats-armor" style="display:none;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="mfield"><label class="mlabel">Defense</label><input class="minput" id="ai-def" type="number" value="0"/></div>
+        <div class="mfield"><label class="mlabel">Evasion</label><input class="minput" id="ai-eva" type="number" value="0"/></div>
+      </div>
+    </div>
     <div class="mrow"><button class="mbtn gold" onclick="confirmAddItem()">Add</button><button class="mbtn sec" onclick="closeModal('m-add-item')">Cancel</button></div>
   </div>
 </div>
@@ -587,8 +622,23 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
     <button class="modal-x" onclick="closeModal('m-edit-item')">&#x2715;</button>
     <input type="hidden" id="ei-id"/>
     <div class="mfield"><label class="mlabel">Item Name</label><input class="minput" id="ei-name"/></div>
+    <div class="mfield"><label class="mlabel">Category</label><select class="minput" id="ei-cat" onchange="toggleEquipFieldsEdit()"></select></div>
     <div class="mfield"><label class="mlabel">Quantity</label><input class="minput" id="ei-qty" type="number" min="0"/></div>
     <div class="mfield"><label class="mlabel">Description</label><textarea class="minput" id="ei-desc" rows="3"></textarea></div>
+    <div id="ei-equip-fields" style="display:none;border:1px solid var(--border);border-radius:2px;padding:10px;margin-bottom:12px;background:rgba(0,0,0,.2);">
+      <div class="mfield"><label class="mlabel">Equipment Slot</label><select class="minput" id="ei-eqslot" onchange="toggleEquipStatFieldsEdit()">
+        <option value="weapon">Weapon</option><option value="armor">Armor</option><option value="acc">Accessory</option><option value="clothes">Clothes</option>
+      </select></div>
+      <div class="mfield" id="ei-weapontype-field"><label class="mlabel">Weapon Type</label><select class="minput" id="ei-weapontype"></select></div>
+      <div id="ei-eqstats-weapon" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="mfield"><label class="mlabel">Attack</label><input class="minput" id="ei-atk" type="number" value="0"/></div>
+        <div class="mfield"><label class="mlabel">Hit Rate</label><input class="minput" id="ei-hit" type="number" value="0"/></div>
+      </div>
+      <div id="ei-eqstats-armor" style="display:none;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="mfield"><label class="mlabel">Defense</label><input class="minput" id="ei-def" type="number" value="0"/></div>
+        <div class="mfield"><label class="mlabel">Evasion</label><input class="minput" id="ei-eva" type="number" value="0"/></div>
+      </div>
+    </div>
     <div class="mrow"><button class="mbtn gold" onclick="confirmEditItem()">Save</button><button class="mbtn sec" onclick="closeModal('m-edit-item')">Cancel</button><button class="mbtn danger" onclick="confirmDeleteItem()">Delete</button></div>
   </div>
 </div>
@@ -603,6 +653,7 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
       <div class="mfield"><label class="mlabel">Arcana</label><input class="minput" id="ac-arcana" placeholder="e.g. The Fool"/></div>
       <div class="mfield"><label class="mlabel">Role</label><input class="minput" id="ac-role" placeholder="e.g. Wild Card"/></div>
       <div class="mfield"><label class="mlabel">Persona Name</label><input class="minput" id="ac-persona" placeholder="e.g. Aristaeus"/></div>
+      <div class="mfield"><label class="mlabel">Weapon Type</label><select class="minput" id="ac-weapontype"></select></div>
       <div class="mfield"><label class="mlabel">HP Max</label><input class="minput" id="ac-hp" type="number" value="80"/></div>
       <div class="mfield"><label class="mlabel">SP Max</label><input class="minput" id="ac-sp" type="number" value="70"/></div>
       <div class="mfield"><label class="mlabel">Level</label><input class="minput" id="ac-lv" type="number" value="1"/></div>
@@ -634,6 +685,7 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
       <div class="mfield"><label class="mlabel">Arcana</label><input class="minput" id="ec-arcana"/></div>
       <div class="mfield"><label class="mlabel">Role</label><input class="minput" id="ec-role"/></div>
       <div class="mfield"><label class="mlabel">Current Persona</label><input class="minput" id="ec-persona"/></div>
+      <div class="mfield"><label class="mlabel">Weapon Type</label><select class="minput" id="ec-weapontype"></select></div>
       <div class="mfield"><label class="mlabel">HP Cur / Max</label><div style="display:flex;gap:6px;"><input class="minput" id="ec-hpcur" type="number" style="width:50%"/><input class="minput" id="ec-hpmax" type="number" style="width:50%"/></div></div>
       <div class="mfield"><label class="mlabel">SP Cur / Max</label><div style="display:flex;gap:6px;"><input class="minput" id="ec-spcur" type="number" style="width:50%"/><input class="minput" id="ec-spmax" type="number" style="width:50%"/></div></div>
       <div class="mfield"><label class="mlabel">Level</label><input class="minput" id="ec-lv" type="number"/></div>
@@ -666,6 +718,23 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
 </div>
 
 <!-- EDIT EQUIP -->
+<!-- EQUIP FROM INVENTORY PICKER -->
+<div class="modal-bg" id="m-equip-picker">
+  <div class="modal-box wide">
+    <div class="modal-title" id="ep-title">Equip from Inventory</div>
+    <button class="modal-x" onclick="closeModal('m-equip-picker')">&#x2715;</button>
+    <div class="uniform-tabs" id="ep-slot-tabs" style="display:flex;gap:6px;margin-bottom:14px;">
+      <button class="btn gold" data-slot="weapon" onclick="setPickerSlot('weapon')">&#x2694; Weapon</button>
+      <button class="btn" data-slot="armor" onclick="setPickerSlot('armor')">&#x1F6E1; Armor</button>
+      <button class="btn" data-slot="acc" onclick="setPickerSlot('acc')">&#x1F48D; Accessory</button>
+      <button class="btn" data-slot="clothes" onclick="setPickerSlot('clothes')">&#x1F455; Clothes</button>
+    </div>
+    <div id="ep-weapontype-note" style="font-size:12px;color:var(--textdim);margin-bottom:10px;display:none;"></div>
+    <div id="ep-list" style="max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;"></div>
+    <div class="mrow"><button class="mbtn sec" onclick="unequipPickerSlot()">Unequip This Slot</button><button class="mbtn sec" onclick="closeModal('m-equip-picker')">Close</button></div>
+  </div>
+</div>
+
 <div class="modal-bg" id="m-equip-edit">
   <div class="modal-box">
     <div class="modal-title" id="ee-title">Edit Equipment</div>
@@ -834,9 +903,49 @@ var AFF_LABELS = ['Phys','Fire','Ice','Elec','Wind','Light','Dark'];
 var AFF_ICONS = ['&#x1F44A;','&#x1F525;','&#x2744;','&#x26A1;','&#x1F4A8;','&#x2600;','&#x1F319;'];
 var AFF_OPTIONS = ['—','Wk','—','Str','Null','Abs','Rep'];
 
+var ITEM_CATEGORIES = [
+  { key: 'equipment', label: 'Equipment', icon: '&#x2694;' },
+  { key: 'usable', label: 'Usables', icon: '&#x1F9EA;' },
+  { key: 'quest', label: 'Quest Items', icon: '&#x1F4DC;' },
+  { key: 'vegetable', label: 'Vegetables', icon: '&#x1F955;' },
+  { key: 'gem', label: 'Gems', icon: '&#x1F48E;' },
+  { key: 'material', label: 'Crafting Materials', icon: '&#x1F529;' },
+  { key: 'other', label: 'Other', icon: '&#x2753;' }
+];
+function itemCatInfo(key) {
+  return ITEM_CATEGORIES.find(function(c){ return c.key === key; }) || ITEM_CATEGORIES[ITEM_CATEGORIES.length-1];
+}
+function itemCatOptionsHtml(selected) {
+  return ITEM_CATEGORIES.map(function(c) {
+    return '<option value="' + c.key + '"' + (c.key === selected ? ' selected' : '') + '>' + c.label + '</option>';
+  }).join('');
+}
+function toggleEquipFieldsAdd() {
+  var isEq = document.getElementById('ai-cat').value === 'equipment';
+  document.getElementById('ai-equip-fields').style.display = isEq ? 'block' : 'none';
+  if (isEq) { document.getElementById('ai-weapontype').innerHTML = weaponTypeOptionsHtml(''); toggleEquipStatFieldsAdd(); }
+}
+function toggleEquipStatFieldsAdd() {
+  var slot = document.getElementById('ai-eqslot').value;
+  document.getElementById('ai-eqstats-weapon').style.display = slot === 'weapon' ? 'grid' : 'none';
+  document.getElementById('ai-eqstats-armor').style.display = slot === 'armor' ? 'grid' : 'none';
+  document.getElementById('ai-weapontype-field').style.display = slot === 'weapon' ? '' : 'none';
+}
+function toggleEquipFieldsEdit() {
+  var isEq = document.getElementById('ei-cat').value === 'equipment';
+  document.getElementById('ei-equip-fields').style.display = isEq ? 'block' : 'none';
+  if (isEq) { toggleEquipStatFieldsEdit(); }
+}
+function toggleEquipStatFieldsEdit() {
+  var slot = document.getElementById('ei-eqslot').value;
+  document.getElementById('ei-eqstats-weapon').style.display = slot === 'weapon' ? 'grid' : 'none';
+  document.getElementById('ei-eqstats-armor').style.display = slot === 'armor' ? 'grid' : 'none';
+  document.getElementById('ei-weapontype-field').style.display = slot === 'weapon' ? '' : 'none';
+}
+
 var defaultState = {
-  items: [], chars: [], slinks: [], quests: [],
-  nextItemId: 1, nextCharId: 1, nextSLId: 1, nextQuestId: 1,
+  items: [], chars: [], slinks: [], quests: [], weaponTypes: [], sheets: {},
+  nextItemId: 1, nextCharId: 1, nextSLId: 1, nextQuestId: 1, nextSheetId: 1,
   skillDescs: {}, playerSessions: {}
 };
 
@@ -1006,6 +1115,7 @@ function logoutPlayer() {
 function refreshSystemScreen() {
   refreshSessionCharSelects();
   renderSessionsList();
+  renderWeaponTypesList();
   if (currentPlayerId === null) {
     document.getElementById('player-login-panel').style.display = '';
     document.getElementById('player-logged-panel').style.display = 'none';
@@ -1015,12 +1125,50 @@ function refreshSystemScreen() {
   }
 }
 
+// ===== WEAPON TYPES =====
+function renderWeaponTypesList() {
+  var el = document.getElementById('weapontypes-list');
+  if (!el) return;
+  if (!ST.weaponTypes || !ST.weaponTypes.length) { el.innerHTML = '<div style="color:var(--textdim);font-size:12px;font-style:italic;">No weapon types yet.</div>'; return; }
+  var h = '';
+  ST.weaponTypes.forEach(function(wt, i) {
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;margin-bottom:4px;">';
+    h += '<span style="font-family:Oswald,sans-serif;font-size:13px;color:var(--text);">' + wt + '</span>';
+    h += '<button class="btn sm" onclick="removeWeaponType(' + i + ')">Remove</button>';
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+function addWeaponType() {
+  var input = document.getElementById('new-weapontype-input');
+  var val = input.value.trim();
+  if (!val) return;
+  if (!ST.weaponTypes) ST.weaponTypes = [];
+  if (ST.weaponTypes.indexOf(val) !== -1) { alert('That weapon type already exists.'); return; }
+  ST.weaponTypes.push(val);
+  saveState(); renderWeaponTypesList();
+  input.value = '';
+}
+function removeWeaponType(idx) {
+  if (!confirm('Remove weapon type "' + ST.weaponTypes[idx] + '"? Characters using it will keep the label but it will no longer appear in the dropdown.')) return;
+  ST.weaponTypes.splice(idx, 1);
+  saveState(); renderWeaponTypesList();
+}
+function weaponTypeOptionsHtml(selected) {
+  var opts = '<option value="">— None —</option>';
+  (ST.weaponTypes||[]).forEach(function(wt) {
+    opts += '<option value="' + wt + '"' + (wt === selected ? ' selected' : '') + '>' + wt + '</option>';
+  });
+  return opts;
+}
+
 // NAVIGATION
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('screen-' + id).classList.add('active');
   document.getElementById('nb-' + id).classList.add('active');
+  if (id === 'sheets') renderSheetsScreen();
 }
 
 // MODAL
@@ -1081,8 +1229,9 @@ function renderItems() {
   var h = '';
   items.forEach(function(item) {
     var sel = selectedItemId === item.id ? ' selected' : '';
+    var cat = itemCatInfo(item.cat);
     h += '<div class="item-row' + sel + '" onclick="selectItem(' + item.id + ')">';
-    h += '<span class="item-name-cell">' + item.name + '</span>';
+    h += '<span class="item-name-cell"><span title="' + cat.label + '" style="margin-right:8px;">' + cat.icon + '</span>' + item.name + '</span>';
     h += '<span class="item-qty-cell">&times;' + item.qty + '</span>';
     h += '</div>';
   });
@@ -1103,15 +1252,35 @@ function selectItem(id) {
   if (!item) return;
   document.getElementById('item-desc-text').style.color = 'var(--text)';
   document.getElementById('item-desc-text').textContent = item.desc || 'No description.';
-  document.getElementById('item-desc-area').querySelector('.item-desc-label').textContent = item.name;
+  var cat = itemCatInfo(item.cat);
+  document.getElementById('item-desc-area').querySelector('.item-desc-label').innerHTML = item.name + ' <span style="color:var(--textdim);font-size:11px;text-transform:none;font-weight:400;">(' + cat.label + ')</span>';
   renderItems();
+}
+function openAddItemModal() {
+  document.getElementById('ai-cat').innerHTML = itemCatOptionsHtml('usable');
+  document.getElementById('ai-equip-fields').style.display = 'none';
+  openModal('m-add-item');
 }
 function confirmAddItem() {
   var name = document.getElementById('ai-name').value.trim();
   if (!name) return;
   var items = getOwnerItems(selectedItemOwner);
   var newId = ST.nextItemId++;
-  items.push({ id: newId, name: name, qty: parseInt(document.getElementById('ai-qty').value)||1, desc: document.getElementById('ai-desc').value.trim() });
+  var cat = document.getElementById('ai-cat').value;
+  var newItem = { id: newId, name: name, cat: cat, qty: parseInt(document.getElementById('ai-qty').value)||1, desc: document.getElementById('ai-desc').value.trim() };
+  if (cat === 'equipment') {
+    var slot = document.getElementById('ai-eqslot').value;
+    newItem.eqSlot = slot;
+    if (slot === 'weapon') {
+      newItem.weaponType = document.getElementById('ai-weapontype').value;
+      newItem.atk = parseInt(document.getElementById('ai-atk').value)||0;
+      newItem.hit = parseInt(document.getElementById('ai-hit').value)||0;
+    } else if (slot === 'armor') {
+      newItem.def = parseInt(document.getElementById('ai-def').value)||0;
+      newItem.eva = parseInt(document.getElementById('ai-eva').value)||0;
+    }
+  }
+  items.push(newItem);
   saveState(); closeModal('m-add-item'); renderItems();
   document.getElementById('ai-name').value = ''; document.getElementById('ai-desc').value = '';
 }
@@ -1121,8 +1290,20 @@ function openEditItem(id) {
   if (!item) return;
   document.getElementById('ei-id').value = id;
   document.getElementById('ei-name').value = item.name;
+  document.getElementById('ei-cat').innerHTML = itemCatOptionsHtml(item.cat || 'usable');
   document.getElementById('ei-qty').value = item.qty;
   document.getElementById('ei-desc').value = item.desc || '';
+  var isEq = (item.cat === 'equipment');
+  document.getElementById('ei-equip-fields').style.display = isEq ? 'block' : 'none';
+  if (isEq) {
+    document.getElementById('ei-eqslot').value = item.eqSlot || 'weapon';
+    document.getElementById('ei-weapontype').innerHTML = weaponTypeOptionsHtml(item.weaponType || '');
+    document.getElementById('ei-atk').value = item.atk || 0;
+    document.getElementById('ei-hit').value = item.hit || 0;
+    document.getElementById('ei-def').value = item.def || 0;
+    document.getElementById('ei-eva').value = item.eva || 0;
+    toggleEquipStatFieldsEdit();
+  }
   openModal('m-edit-item');
 }
 function confirmEditItem() {
@@ -1131,8 +1312,25 @@ function confirmEditItem() {
   var item = items.find(function(i){ return i.id === id; });
   if (!item) return;
   item.name = document.getElementById('ei-name').value.trim();
+  item.cat = document.getElementById('ei-cat').value;
   item.qty = parseInt(document.getElementById('ei-qty').value)||0;
   item.desc = document.getElementById('ei-desc').value.trim();
+  if (item.cat === 'equipment') {
+    var slot = document.getElementById('ei-eqslot').value;
+    item.eqSlot = slot;
+    if (slot === 'weapon') {
+      item.weaponType = document.getElementById('ei-weapontype').value;
+      item.atk = parseInt(document.getElementById('ei-atk').value)||0;
+      item.hit = parseInt(document.getElementById('ei-hit').value)||0;
+      delete item.def; delete item.eva;
+    } else if (slot === 'armor') {
+      item.def = parseInt(document.getElementById('ei-def').value)||0;
+      item.eva = parseInt(document.getElementById('ei-eva').value)||0;
+      delete item.weaponType; delete item.atk; delete item.hit;
+    } else {
+      delete item.weaponType; delete item.atk; delete item.hit; delete item.def; delete item.eva;
+    }
+  }
   saveState(); closeModal('m-edit-item'); renderItems();
   if (selectedItemId === id) selectItem(id);
 }
@@ -1162,8 +1360,10 @@ function selectEquipChar(id) {
   renderEquipCharList();
   if (!c) return;
   var editBtn = document.getElementById('equip-edit-btn');
+  var pickBtn = document.getElementById('equip-pick-btn');
   var canEditEquip = adminMode || (currentPlayerId !== null && currentPlayerId === id);
-  if (canEditEquip) { editBtn.style.display = ''; } else { editBtn.style.display = 'none'; }
+  editBtn.style.display = adminMode ? '' : 'none';
+  pickBtn.style.display = canEditEquip ? '' : 'none';
   var eq = c.equip || {};
   var h = '';
   function eSlot(icon, label, name, statsHtml, descHtml) {
@@ -1263,6 +1463,87 @@ function confirmEquipEdit() {
   saveState(); closeModal('m-equip-edit'); selectEquipChar(id);
 }
 
+// ===== EQUIP FROM INVENTORY PICKER =====
+var pickerSlot = 'weapon';
+function openEquipPicker() {
+  if (!selectedEquipChar) return;
+  pickerSlot = 'weapon';
+  document.getElementById('ep-title').textContent = 'Equip from Inventory';
+  setPickerSlot('weapon');
+  openModal('m-equip-picker');
+}
+function setPickerSlot(slot) {
+  pickerSlot = slot;
+  document.querySelectorAll('#ep-slot-tabs .btn').forEach(function(b) {
+    if (b.getAttribute('data-slot') === slot) { b.classList.add('gold'); } else { b.classList.remove('gold'); }
+  });
+  renderEquipPickerList();
+}
+function getAllEquipmentItems() {
+  // Party inventory + this character's personal inventory, equipment category only
+  var c = ST.chars.find(function(x){ return x.id === selectedEquipChar; });
+  var pool = [];
+  ST.items.forEach(function(it) { if (it.cat === 'equipment') pool.push({ item: it, source: 'Party' }); });
+  if (c && c.inventory) c.inventory.forEach(function(it) { if (it.cat === 'equipment') pool.push({ item: it, source: 'Personal' }); });
+  return pool;
+}
+function renderEquipPickerList() {
+  var c = ST.chars.find(function(x){ return x.id === selectedEquipChar; });
+  var el = document.getElementById('ep-list');
+  var note = document.getElementById('ep-weapontype-note');
+  var pool = getAllEquipmentItems().filter(function(p) { return (p.item.eqSlot || 'weapon') === pickerSlot; });
+  if (pickerSlot === 'weapon') {
+    note.style.display = 'block';
+    note.textContent = c && c.weaponType
+      ? ('Showing weapons usable by ' + c.name + ' (Type: ' + c.weaponType + ').')
+      : (c ? (c.name + ' has no weapon type set \u2014 set one in Edit Character to filter this list.') : '');
+    if (c && c.weaponType) pool = pool.filter(function(p) { return p.item.weaponType === c.weaponType; });
+  } else {
+    note.style.display = 'none';
+  }
+  if (!pool.length) {
+    el.innerHTML = '<div style="color:var(--textdim);font-style:italic;font-size:13px;padding:10px 0;">No matching equipment items found in Party or Personal inventory. Add one from the Item tab (category: Equipment).</div>';
+    return;
+  }
+  el.innerHTML = pool.map(function(p) {
+    var it = p.item;
+    var statLine = '';
+    if (pickerSlot === 'weapon') statLine = 'ATK ' + (it.atk||0) + ' &nbsp; HIT ' + (it.hit||0);
+    else if (pickerSlot === 'armor') statLine = 'DEF ' + (it.def||0) + ' &nbsp; EVA ' + (it.eva||0);
+    return '<div class="char-row" style="text-align:left;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;" onclick="equipPickedItem(' + it.id + ',\'' + p.source + '\')">'
+      + '<span><b>' + it.name + '</b> <span style="color:var(--textdim);font-size:11px;">(' + p.source + ')</span></span>'
+      + '<span style="color:var(--gold);font-family:Oswald,sans-serif;font-size:12px;">' + statLine + '</span>'
+      + '</div>';
+  }).join('');
+}
+function equipPickedItem(itemId, source) {
+  var c = ST.chars.find(function(x){ return x.id === selectedEquipChar; });
+  if (!c) return;
+  var pool = source === 'Party' ? ST.items : (c.inventory || []);
+  var it = pool.find(function(i){ return i.id === itemId; });
+  if (!it) return;
+  if (!c.equip) c.equip = {};
+  if (pickerSlot === 'weapon') {
+    c.equip.weapon = it.name; c.equip.weaponAtk = it.atk||0; c.equip.weaponHit = it.hit||0; c.equip.weaponEffect = it.desc||'';
+  } else if (pickerSlot === 'armor') {
+    c.equip.armor = it.name; c.equip.armorDef = it.def||0; c.equip.armorEva = it.eva||0; c.equip.armorEffect = it.desc||'';
+  } else if (pickerSlot === 'acc') {
+    c.equip.acc = it.name; c.equip.accEffect = it.desc||'';
+  } else if (pickerSlot === 'clothes') {
+    c.equip.clothes = it.name; c.equip.clothesEffect = it.desc||'';
+  }
+  saveState(); closeModal('m-equip-picker'); selectEquipChar(c.id);
+}
+function unequipPickerSlot() {
+  var c = ST.chars.find(function(x){ return x.id === selectedEquipChar; });
+  if (!c || !c.equip) return;
+  if (pickerSlot === 'weapon') { c.equip.weapon=''; c.equip.weaponAtk=0; c.equip.weaponHit=0; c.equip.weaponEffect=''; }
+  else if (pickerSlot === 'armor') { c.equip.armor=''; c.equip.armorDef=0; c.equip.armorEva=0; c.equip.armorEffect=''; }
+  else if (pickerSlot === 'acc') { c.equip.acc=''; c.equip.accEffect=''; }
+  else if (pickerSlot === 'clothes') { c.equip.clothes=''; c.equip.clothesEffect=''; }
+  saveState(); closeModal('m-equip-picker'); selectEquipChar(c.id);
+}
+
 // ===== SOCIAL LINKS =====
 function renderSocialLinks() {
   var el = document.getElementById('sl-list-body');
@@ -1290,14 +1571,14 @@ function selectSL(id) {
   var sl = ST.slinks.find(function(s){ return s.id === id; });
   renderSocialLinks();
   if (!sl) return;
-  // Image
-  var imgBox = document.getElementById('sl-char-img-box');
+  // Background portrait, full-bleed bottom-right
+  var bgEl = document.getElementById('sl-bg-img');
   if (sl.img) {
-    imgBox.innerHTML = '<img src="' + sl.img + '" alt="' + sl.name + '"/>';
+    bgEl.style.backgroundImage = "url('" + sl.img.replace(/'/g,"%27") + "')";
   } else {
-    imgBox.innerHTML = '<div class="no-img">No image<br>added yet</div>';
+    bgEl.style.backgroundImage = 'none';
   }
-  document.getElementById('sl-char-name').textContent = sl.locked ? '???' : sl.name;
+  document.getElementById('sl-char-name').textContent = sl.locked ? '???' : ('View ' + sl.name + '\u2019s Social Link');
   // Detail panel
   var dp = document.getElementById('sl-detail');
   var di = document.getElementById('sl-detail-inner');
@@ -1374,10 +1655,13 @@ function selectStatusChar(id) {
   var c = ST.chars.find(function(x){ return x.id === id; });
   renderStatusList();
   if (!c) return;
-  // Image
-  var imgBox = document.getElementById('status-char-img');
-  if (c.img) { imgBox.innerHTML = '<img src="' + c.img + '" alt="' + c.name + '" style="width:100%;height:100%;object-fit:contain;"/>'; }
-  else { imgBox.innerHTML = '<div class="no-img" style="color:var(--textdim);font-size:12px;text-align:center;">No image added</div>'; }
+  // Background portrait, full-bleed bottom-right
+  var bgEl = document.getElementById('status-bg-img');
+  if (c.img) {
+    bgEl.style.backgroundImage = "url('" + c.img.replace(/'/g,"%27") + "')";
+  } else {
+    bgEl.style.backgroundImage = 'none';
+  }
   document.getElementById('status-char-name').textContent = c.name;
   // HP/SP bars
   var hpPct = c.hpmax ? Math.round((c.hpcur/c.hpmax)*100) : 0;
@@ -1550,16 +1834,57 @@ function confirmAddChar() {
   ST.chars.push({
     id: ST.nextCharId++, name: name, arcana: document.getElementById('ac-arcana').value.trim(),
     role: document.getElementById('ac-role').value.trim(), persona: document.getElementById('ac-persona').value.trim(),
+    weaponType: document.getElementById('ac-weapontype').value,
     lv: parseInt(document.getElementById('ac-lv').value)||1, exp: parseInt(document.getElementById('ac-exp').value)||100,
     hpcur: hp, hpmax: hp, spcur: sp, spmax: sp,
     stats: { str: parseInt(document.getElementById('ac-str').value)||8, mag: parseInt(document.getElementById('ac-mag').value)||8, end: parseInt(document.getElementById('ac-end').value)||8, agi: parseInt(document.getElementById('ac-agi').value)||8, lck: parseInt(document.getElementById('ac-lck').value)||8 },
     socialStats: socRaw, condition: 'Normal', notes: document.getElementById('ac-notes').value.trim(),
     img: document.getElementById('ac-img').value.trim(), personaimg: '',
     skills: ['','','','','','','',''], nextskill: '', affinities: ['—','—','—','—','—','—','—'],
-    equip: {weapon:'',weaponAtk:0,weaponHit:0,weaponEffect:'',armor:'',armorDef:0,armorEva:0,armorEffect:'',acc:'',accEffect:'',clothes:'',clothesEffect:''}, inventory: []
+    equip: {weapon:'',weaponAtk:0,weaponHit:0,weaponEffect:'',armor:'',armorDef:0,armorEva:0,armorEffect:'',acc:'',accEffect:'',clothes:'',clothesEffect:''}, inventory: [],
+    fromSheetId: window.__pendingSheetId || null
   });
+  window.__pendingSheetId = null;
   saveState(); closeModal('m-add-char'); renderAll();
   ['ac-name','ac-arcana','ac-role','ac-persona','ac-notes','ac-img','ac-socials'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+// ===== ADD CHARACTER: choice between scratch / from sheet =====
+function openAddCharChoice() {
+  window.__pendingSheetId = null;
+  var sheetIds = Object.keys(ST.sheets || {}).filter(function(k){ return ST.sheets[k].submitted; });
+  if (!sheetIds.length) { openAddCharModal(); return; }
+  var overlay = document.createElement('div');
+  overlay.className = 'modal-bg open';
+  overlay.id = 'm-addchar-choice';
+  var optsHtml = sheetIds.map(function(sid) {
+    var sh = ST.sheets[sid];
+    return '<div class="char-row" style="text-align:left;margin-bottom:4px;" onclick="startCharFromSheetKey(\'' + sid + '\')">' + (sh.name || 'Unnamed') + '</div>';
+  }).join('');
+  overlay.innerHTML = '<div class="modal-box">'
+    + '<div class="modal-title">Add Character</div>'
+    + '<button class="modal-x" onclick="document.getElementById(\'m-addchar-choice\').remove()">&#x2715;</button>'
+    + '<div class="mfield"><button class="mbtn gold" style="width:100%;" onclick="document.getElementById(\'m-addchar-choice\').remove();openAddCharModal();">Create From Scratch</button></div>'
+    + '<div class="divider"></div>'
+    + '<div class="mlabel" style="margin-bottom:8px;">Or carry over name + image from a submitted sheet:</div>'
+    + '<div style="max-height:240px;overflow-y:auto;">' + optsHtml + '</div>'
+    + '</div>';
+  document.body.appendChild(overlay);
+}
+function openAddCharModal() {
+  document.getElementById('ac-weapontype').innerHTML = weaponTypeOptionsHtml('');
+  openModal('m-add-char');
+}
+function startCharFromSheetKey(sheetKey) {
+  var sh = ST.sheets[sheetKey];
+  if (!sh) return;
+  var choiceModal = document.getElementById('m-addchar-choice');
+  if (choiceModal) choiceModal.remove();
+  window.__pendingSheetId = sheetKey;
+  openAddCharModal();
+  document.getElementById('ac-name').value = sh.name || '';
+  document.getElementById('ac-img').value = sh.img || '';
+  document.getElementById('ac-notes').value = sh.backstory ? ('Backstory: ' + sh.backstory) : '';
 }
 function openCharEdit(id) {
   if (!id) return;
@@ -1571,6 +1896,7 @@ function openCharEdit(id) {
   document.getElementById('ec-arcana').value = c.arcana||'';
   document.getElementById('ec-role').value = c.role||'';
   document.getElementById('ec-persona').value = c.persona||'';
+  document.getElementById('ec-weapontype').innerHTML = weaponTypeOptionsHtml(c.weaponType||'');
   document.getElementById('ec-hpcur').value = c.hpcur||0;
   document.getElementById('ec-hpmax').value = c.hpmax||0;
   document.getElementById('ec-spcur').value = c.spcur||0;
@@ -1663,6 +1989,7 @@ function confirmEditChar() {
   c.arcana = document.getElementById('ec-arcana').value.trim();
   c.role = document.getElementById('ec-role').value.trim();
   c.persona = document.getElementById('ec-persona').value.trim();
+  c.weaponType = document.getElementById('ec-weapontype').value;
   c.hpcur = parseInt(document.getElementById('ec-hpcur').value)||0;
   c.hpmax = parseInt(document.getElementById('ec-hpmax').value)||1;
   c.spcur = parseInt(document.getElementById('ec-spcur').value)||0;
@@ -1699,7 +2026,7 @@ function confirmDeleteChar() {
   var c = ST.chars.find(function(x){ return x.id === id; });
   if (!c || !confirm('Delete ' + c.name + '?')) return;
   ST.chars = ST.chars.filter(function(x){ return x.id !== id; });
-  if (selectedStatusChar === id) { selectedStatusChar = null; document.getElementById('status-char-img').innerHTML = '<div class="no-img">Select a character</div>'; document.getElementById('status-char-name').textContent = ''; document.getElementById('status-char-hpsp').innerHTML = ''; document.getElementById('status-char-detail').style.display = 'none'; }
+  if (selectedStatusChar === id) { selectedStatusChar = null; document.getElementById('status-bg-img').style.backgroundImage = 'none'; document.getElementById('status-char-name').textContent = 'View whose status?'; document.getElementById('status-char-hpsp').innerHTML = ''; document.getElementById('status-char-detail').style.display = 'none'; }
   if (selectedEquipChar === id) { selectedEquipChar = null; document.getElementById('equip-slots-area').innerHTML = '<div style="color:var(--textdim);font-style:italic;font-size:14px;padding:20px;">Select a character to view equipment.</div>'; }
   saveState(); closeModal('m-edit-char'); renderAll();
 }
@@ -1803,7 +2130,147 @@ function renderAll() {
   renderStatusList();
   renderQuests();
   refreshSystemScreen();
+  renderSheetsScreen();
   if (selectedEquipChar) selectEquipChar(selectedEquipChar);
+}
+
+// ===== CHARACTER SHEETS =====
+var sheetsGmViewKey = null; // which session key the GM is currently viewing, if any
+
+function sheetKeyFor(sessionId) { return 'session_' + sessionId; }
+
+function renderSheetsScreen() {
+  var el = document.getElementById('sheets-content');
+  if (!el) return;
+
+  if (adminMode) {
+    renderSheetsGmView(el);
+    return;
+  }
+
+  if (currentPlayerId === null) {
+    el.innerHTML = '<div style="color:var(--textdim);font-size:14px;padding:20px 0;">Log in from the <b style="color:var(--gold);">System</b> tab with your player session to view or submit your character sheet.</div>';
+    return;
+  }
+
+  var key = sheetKeyFor(currentPlayerId);
+  var sheet = ST.sheets && ST.sheets[key];
+  if (sheet && sheet.submitted) {
+    el.innerHTML = renderSheetReadOnly(sheet);
+  } else {
+    el.innerHTML = renderSheetForm(key, sheet);
+  }
+}
+
+function renderSheetsGmView(el) {
+  var keys = Object.keys(ST.sheets || {});
+  var h = '<div style="margin-bottom:14px;">';
+  h += '<div class="mlabel" style="margin-bottom:8px;">All submitted sheets:</div>';
+  if (!keys.length) {
+    h += '<div style="color:var(--textdim);font-size:13px;font-style:italic;">No sheets submitted yet.</div>';
+  } else {
+    h += '<div style="display:flex;flex-direction:column;gap:4px;">';
+    keys.forEach(function(k) {
+      var sh = ST.sheets[k];
+      var sel = sheetsGmViewKey === k ? ' selected topsel' : '';
+      h += '<div class="char-row' + sel + '" style="text-align:left;" onclick="gmViewSheet(\'' + k + '\')">' + (sh.name || 'Unnamed') + (sh.submitted ? '' : ' <span style="color:var(--textdim);font-size:11px;">(draft)</span>') + '</div>';
+    });
+    h += '</div>';
+  }
+  h += '</div><div class="divider"></div><div id="sheets-gm-detail"></div>';
+  el.innerHTML = h;
+  if (sheetsGmViewKey && ST.sheets[sheetsGmViewKey]) {
+    document.getElementById('sheets-gm-detail').innerHTML = renderSheetReadOnly(ST.sheets[sheetsGmViewKey], true, sheetsGmViewKey);
+  } else {
+    document.getElementById('sheets-gm-detail').innerHTML = '<div style="color:var(--textdim);font-size:13px;font-style:italic;">Select a sheet above to view it.</div>';
+  }
+}
+function gmViewSheet(key) {
+  sheetsGmViewKey = key;
+  renderSheetsScreen();
+}
+
+function renderSheetForm(key, existing) {
+  var d = existing || {};
+  var h = '<div style="color:var(--textdim);font-size:13px;margin-bottom:16px;">Fill this out once. After you submit, only the GM can make further edits.</div>';
+  h += '<div class="mfield"><label class="mlabel">Character Name</label><input class="minput" id="sf-name" value="' + (d.name||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '<div class="mgrid2">';
+  h += '<div class="mfield"><label class="mlabel">Age</label><input class="minput" id="sf-age" value="' + (d.age||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '<div class="mfield"><label class="mlabel">Height</label><input class="minput" id="sf-height" value="' + (d.height||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '<div class="mfield"><label class="mlabel">Weight</label><input class="minput" id="sf-weight" value="' + (d.weight||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '<div class="mfield"><label class="mlabel">Gender</label><input class="minput" id="sf-gender" value="' + (d.gender||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '</div>';
+  h += '<div class="mfield"><label class="mlabel">Sexuality</label><input class="minput" id="sf-sexuality" value="' + (d.sexuality||'').replace(/"/g,'&quot;') + '"/></div>';
+  h += '<div class="mfield"><label class="mlabel">Character Image (URL)</label><input class="minput" id="sf-img" value="' + (d.img||'').replace(/"/g,'&quot;') + '" placeholder="https://..."/></div>';
+  h += '<div style="background:rgba(212,76,110,.12);border:1px solid var(--hp);border-radius:2px;padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--text);line-height:1.5;">';
+  h += '&#x26A0; <b>Do not submit a backstory here</b> \u2014 and do not write anything in the box below \u2014 unless your backstory has already been discussed and confirmed with the GM.';
+  h += '</div>';
+  h += '<div class="mfield"><label class="mlabel">Backstory</label><textarea class="minput" id="sf-backstory" rows="6">' + (d.backstory||'') + '</textarea></div>';
+  h += '<div class="mrow"><button class="mbtn gold" onclick="submitSheet(\'' + key + '\')">Submit Sheet (final \u2014 cannot edit after)</button>' + (existing ? '<button class="mbtn sec" onclick="saveSheetDraft(\'' + key + '\')">Save Draft</button>' : '') + '</div>';
+  return h;
+}
+
+function collectSheetFormData() {
+  return {
+    name: document.getElementById('sf-name').value.trim(),
+    age: document.getElementById('sf-age').value.trim(),
+    height: document.getElementById('sf-height').value.trim(),
+    weight: document.getElementById('sf-weight').value.trim(),
+    gender: document.getElementById('sf-gender').value.trim(),
+    sexuality: document.getElementById('sf-sexuality').value.trim(),
+    img: document.getElementById('sf-img').value.trim(),
+    backstory: document.getElementById('sf-backstory').value.trim()
+  };
+}
+function saveSheetDraft(key) {
+  if (!ST.sheets) ST.sheets = {};
+  var data = collectSheetFormData();
+  data.submitted = false;
+  ST.sheets[key] = data;
+  saveState();
+  alert('Draft saved. You can keep editing until you submit.');
+}
+function submitSheet(key) {
+  if (!confirm('Submit this sheet? You will not be able to edit it yourself afterward \u2014 only the GM can.')) return;
+  if (!ST.sheets) ST.sheets = {};
+  var data = collectSheetFormData();
+  if (!data.name) { alert('Please enter a character name.'); return; }
+  data.submitted = true;
+  ST.sheets[key] = data;
+  saveState();
+  renderSheetsScreen();
+}
+
+function renderSheetReadOnly(sheet, gmMode, key) {
+  var h = '<div style="display:flex;gap:20px;flex-wrap:wrap;">';
+  if (sheet.img) {
+    h += '<div style="width:180px;min-width:180px;height:220px;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:rgba(0,0,0,.4);"><img src="' + sheet.img + '" style="width:100%;height:100%;object-fit:cover;"/></div>';
+  }
+  h += '<div style="flex:1;min-width:200px;">';
+  h += '<div style="font-family:Oswald,sans-serif;font-size:22px;font-weight:700;color:var(--gold);">' + (sheet.name||'Unnamed') + '</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:13px;">';
+  h += '<div><span class="mlabel" style="display:inline;">Age:</span> ' + (sheet.age||'\u2014') + '</div>';
+  h += '<div><span class="mlabel" style="display:inline;">Gender:</span> ' + (sheet.gender||'\u2014') + '</div>';
+  h += '<div><span class="mlabel" style="display:inline;">Height:</span> ' + (sheet.height||'\u2014') + '</div>';
+  h += '<div><span class="mlabel" style="display:inline;">Weight:</span> ' + (sheet.weight||'\u2014') + '</div>';
+  h += '<div style="grid-column:1/-1;"><span class="mlabel" style="display:inline;">Sexuality:</span> ' + (sheet.sexuality||'\u2014') + '</div>';
+  h += '</div></div></div>';
+  h += '<div class="divider"></div>';
+  h += '<div class="mlabel" style="margin-bottom:6px;">Backstory</div>';
+  h += '<div style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-line;">' + (sheet.backstory ? sheet.backstory : '<span style=\"color:var(--textdim);font-style:italic;\">No backstory submitted.</span>') + '</div>';
+  if (gmMode && key) {
+    h += '<div class="mrow" style="margin-top:18px;"><button class="mbtn gold" onclick="gmEditSheet(\'' + key + '\')">&#x270E; Edit Sheet (GM)</button><button class="mbtn" onclick="useSheetForNewChar(\'' + key + '\')">Use to Create Character</button></div>';
+  }
+  return h;
+}
+
+function gmEditSheet(key) {
+  var sheet = ST.sheets[key];
+  document.getElementById('sheets-gm-detail').innerHTML = renderSheetForm(key, sheet);
+}
+function useSheetForNewChar(key) {
+  showScreen('status');
+  startCharFromSheetKey(key);
 }
 
 if (window.__firestore) {
