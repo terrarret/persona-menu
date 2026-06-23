@@ -229,6 +229,9 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .mbtn.sec{background:none;border:1px solid var(--border);color:var(--textdim);margin-left:8px;}
 .mbtn.sec:hover{border-color:var(--textdim);color:var(--text);}
 .mbtn.danger{background:#c0392b;color:#fff;margin-left:auto;}
+.uniform-tab{background:none;border:1px solid var(--border);border-bottom:none;color:var(--textdim);font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;padding:6px 16px;cursor:pointer;transition:all .15s;border-radius:2px 2px 0 0;}
+.uniform-tab.active{background:var(--purple);color:var(--text);border-color:var(--purple);}
+.uniform-tab:not(.active):hover{color:var(--gold);border-color:var(--gold);}
 .merr{color:var(--hp);font-size:12px;margin-top:6px;display:none;}
 .merr.show{display:block;}
 .mgrid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -340,7 +343,7 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
           <div class="sec-head" style="margin-bottom:12px;">Inventories</div>
           <div class="char-list" id="item-owner-list"></div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:600px;">
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:760px;margin-left:24px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
             <div class="sec-head gold" id="item-list-title">Party Inventory</div>
             <button class="btn gold admin-ctrl" onclick="openAddItemModal()">+ Add Item</button>
@@ -416,13 +419,13 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
     <div class="screen" id="screen-status">
       <div class="p4-layout" style="padding:20px 40px 20px 20px;position:relative;">
         <div id="status-bg-img" class="bg-portrait"></div>
-        <div style="width:300px;min-width:300px;flex-shrink:0;position:relative;z-index:2;">
-          <div id="status-char-hpsp" style="width:100%;margin-top:6px;"></div>
-          <div class="admin-ctrl flex" style="gap:8px;margin-top:8px;" id="status-admin-btns">
+        <div id="status-hpsp-col" style="width:0;min-width:0;flex-shrink:0;position:relative;z-index:2;overflow:hidden;transition:width .15s, min-width .15s;">
+          <div id="status-char-hpsp" style="width:280px;margin-top:6px;"></div>
+          <div class="admin-ctrl flex" style="gap:8px;margin-top:8px;width:280px;" id="status-admin-btns">
             <button class="btn gold" onclick="openCharEdit(selectedStatusChar)">&#x270E; Edit Stats</button>
           </div>
         </div>
-        <div style="flex:1;overflow-y:auto;max-width:480px;position:relative;z-index:2;padding-right:8px;">
+        <div style="flex:1;overflow-y:auto;max-width:520px;position:relative;z-index:2;padding-right:8px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div class="sec-head">Party Status</div>
             <button class="btn gold admin-ctrl" onclick="openAddCharChoice()">+ Add Character</button>
@@ -440,7 +443,7 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
     <!-- ======= QUEST SCREEN ======= -->
     <div class="screen" id="screen-quest">
       <div class="p4-layout" style="padding:20px 40px 20px 20px;">
-        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:620px;">
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;max-width:820px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <div>
               <span class="sec-head" style="margin-right:8px;margin-bottom:0;">Active</span>
@@ -521,17 +524,17 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
           <!-- PLAYER SESSION LOGIN -->
           <div class="system-panel" id="player-login-panel" style="width:100%;display:none;">
             <div class="system-title-big" style="font-size:28px;">Player Login</div>
-            <div class="system-sub">Manage your own equipment &amp; inventory</div>
+            <div class="system-sub">Submit your sheet &amp; manage your equipment</div>
             <div style="margin-top:20px;">
               <div class="mfield">
-                <label class="mlabel">Character</label>
-                <select class="minput" id="player-login-char"></select>
+                <label class="mlabel">Username</label>
+                <input class="minput" id="player-login-user" placeholder="Your username..." onkeydown="if(event.key==='Enter')doPlayerLogin()"/>
               </div>
               <div class="mfield">
-                <label class="mlabel">Session Password</label>
-                <input class="minput" type="password" id="player-login-pw" placeholder="Enter your password..." onkeydown="if(event.key==='Enter')doPlayerLogin()"/>
+                <label class="mlabel">Password</label>
+                <input class="minput" type="password" id="player-login-pw" placeholder="Your password..." onkeydown="if(event.key==='Enter')doPlayerLogin()"/>
               </div>
-              <div class="merr" id="player-login-err">Incorrect password, or no session set for this character.</div>
+              <div class="merr" id="player-login-err">Incorrect username or password.</div>
               <div class="mrow" style="margin-top:10px;">
                 <button class="mbtn gold" onclick="doPlayerLogin()">Log In</button>
               </div>
@@ -542,24 +545,25 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
           <div class="system-panel system-logged" id="player-logged-panel" style="display:none;width:100%;">
             <div class="system-title-big" style="font-size:28px;">Player Login</div>
             <div class="system-logged-badge" id="player-logged-badge">&#x2726; Logged In</div>
-            <div style="color:var(--textdim);font-size:14px;margin-bottom:20px;">You can edit your own equipment and personal inventory in the Equip and Item tabs.</div>
+            <div style="color:var(--textdim);font-size:14px;margin-bottom:8px;" id="player-logged-charinfo">No character linked to your account yet \u2014 ask your GM, or submit your sheet in the Sheets tab.</div>
+            <div style="color:var(--textdim);font-size:13px;margin-bottom:20px;">Once linked, you can edit your equipment and personal inventory in the Equip and Item tabs, and view your character sheet in the Sheets tab.</div>
             <button class="mbtn" onclick="logoutPlayer()">Log Out</button>
           </div>
 
           <!-- GM: MANAGE PLAYER SESSIONS -->
           <div class="system-panel admin-ctrl" id="sys-sessions-panel" style="width:100%;">
-            <div class="system-sub" style="font-size:18px;color:var(--text);font-family:'Oswald',sans-serif;font-weight:700;">Player Sessions</div>
-            <div style="color:var(--textdim);font-size:13px;margin:8px 0 16px;">Create login credentials for each player so they can manage their own equipment and personal items.</div>
+            <div class="system-sub" style="font-size:18px;color:var(--text);font-family:'Oswald',sans-serif;font-weight:700;">Player Accounts</div>
+            <div style="color:var(--textdim);font-size:13px;margin:8px 0 16px;">Create a login (username + password) for each player. They can log in right away to submit their character sheet. Once you've created their character, come back here and link the account to it.</div>
             <div id="sessions-list" style="margin-bottom:14px;"></div>
             <div class="mfield">
-              <label class="mlabel">Character</label>
-              <select class="minput" id="session-char-select"></select>
+              <label class="mlabel">New Username</label>
+              <input class="minput" id="session-user-input" placeholder="e.g. alex, the player's name..."/>
             </div>
             <div class="mfield">
               <label class="mlabel">Set Password</label>
               <input class="minput" id="session-pw-input" placeholder="Choose a password for this player..."/>
             </div>
-            <button class="mbtn gold" onclick="setPlayerSession()">Save Session</button>
+            <button class="mbtn gold" onclick="setPlayerSession()">Create Account</button>
           </div>
 
           <!-- GM: MANAGE WEAPON TYPES -->
@@ -780,8 +784,9 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
     <div class="mfield"><label class="mlabel">Arcana</label><input class="minput" id="asl-arcana" placeholder="e.g. The Magician"/></div>
     <div class="mfield"><label class="mlabel">Name</label><input class="minput" id="asl-name" placeholder="Character name"/></div>
     <div class="mfield"><label class="mlabel">Persona Granted</label><input class="minput" id="asl-persona" placeholder="e.g. Hephaestus"/></div>
-    <div class="mfield"><label class="mlabel">Notes / Description</label><textarea class="minput" id="asl-notes" rows="3"></textarea></div>
+    <div class="mfield"><label class="mlabel">General Description</label><textarea class="minput" id="asl-notes" rows="3" placeholder="Who they are, relationship context..."></textarea></div>
     <div class="mfield"><label class="mlabel">Character Image URL</label><input class="minput" id="asl-img" placeholder="https://..."/></div>
+    <div class="mfield"><label class="mlabel">Tarot Card Image URL</label><input class="minput" id="asl-cardimg" placeholder="https://..."/></div>
     <div class="mfield"><label class="mlabel">Start Locked?</label><select class="minput" id="asl-locked"><option value="1">Yes</option><option value="0">No</option></select></div>
     <div class="mrow"><button class="mbtn gold" onclick="confirmAddSL()">Add</button><button class="mbtn sec" onclick="closeModal('m-add-sl')">Cancel</button></div>
   </div>
@@ -789,18 +794,40 @@ body.mobile-mode #m-socials > .modal-box > div[style*="display:flex"] { flex-dir
 
 <!-- EDIT SOCIAL LINK -->
 <div class="modal-bg" id="m-edit-sl">
-  <div class="modal-box">
+  <div class="modal-box wide" style="max-width:680px;">
     <div class="modal-title" id="esl-title">Edit Social Link</div>
     <button class="modal-x" onclick="closeModal('m-edit-sl')">&#x2715;</button>
     <input type="hidden" id="esl-id"/>
-    <div class="mfield"><label class="mlabel">Name</label><input class="minput" id="esl-name"/></div>
-    <div class="mfield"><label class="mlabel">Arcana</label><input class="minput" id="esl-arcana"/></div>
-    <div class="mfield"><label class="mlabel">Persona Granted</label><input class="minput" id="esl-persona"/></div>
-    <div class="mfield"><label class="mlabel">Rank (0-10)</label><input class="minput" id="esl-rank" type="number" min="0" max="10"/></div>
-    <div class="mfield"><label class="mlabel">Notes</label><textarea class="minput" id="esl-notes" rows="4"></textarea></div>
-    <div class="mfield"><label class="mlabel">Character Image URL</label><input class="minput" id="esl-img"/></div>
-    <div class="mfield"><label class="mlabel">Locked?</label><select class="minput" id="esl-locked"><option value="0">Unlocked</option><option value="1">Locked</option></select></div>
-    <div class="mrow"><button class="mbtn gold" onclick="confirmEditSL()">Save</button><button class="mbtn sec" onclick="closeModal('m-edit-sl')">Cancel</button><button class="mbtn danger" onclick="confirmDeleteSL()">Delete</button></div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:0;border-bottom:2px solid var(--purple);margin-bottom:14px;" id="esl-tabs">
+      <button class="uniform-tab active" onclick="eslTab('info',this)">Basic Info</button>
+      <button class="uniform-tab" onclick="eslTab('ranks',this)">Rank Descriptions</button>
+      <button class="uniform-tab" onclick="eslTab('abilities',this)">Abilities</button>
+    </div>
+    <!-- TAB: Basic Info -->
+    <div id="esl-tab-info">
+      <div class="mfield"><label class="mlabel">Name</label><input class="minput" id="esl-name"/></div>
+      <div class="mfield"><label class="mlabel">Arcana</label><input class="minput" id="esl-arcana"/></div>
+      <div class="mfield"><label class="mlabel">Persona Granted</label><input class="minput" id="esl-persona"/></div>
+      <div class="mfield"><label class="mlabel">Current Rank (0-10)</label><input class="minput" id="esl-rank" type="number" min="0" max="10"/></div>
+      <div class="mfield"><label class="mlabel">General Description (who they are, relationship context)</label><textarea class="minput" id="esl-notes" rows="4" placeholder="Background info visible at any rank..."></textarea></div>
+      <div class="mfield"><label class="mlabel">Description for Ranks 1&#x2013;9</label><textarea class="minput" id="esl-desc19" rows="3" placeholder="Shown when rank is between 1 and 9..."></textarea></div>
+      <div class="mfield"><label class="mlabel">Description for Rank 10 (Max Bond)</label><textarea class="minput" id="esl-desc10" rows="3" placeholder="Shown when rank reaches 10..."></textarea></div>
+      <div class="mfield"><label class="mlabel">Character Image URL</label><input class="minput" id="esl-img" placeholder="https://..."/></div>
+      <div class="mfield"><label class="mlabel">Tarot Card Image URL</label><input class="minput" id="esl-cardimg" placeholder="https://..."/></div>
+      <div class="mfield"><label class="mlabel">Locked?</label><select class="minput" id="esl-locked"><option value="0">Unlocked</option><option value="1">Locked</option></select></div>
+    </div>
+    <!-- TAB: Rank Descriptions -->
+    <div id="esl-tab-ranks" style="display:none;">
+      <div style="color:var(--textdim);font-size:12px;margin-bottom:12px;">A direct description for each specific rank — what happens when the party reaches this rank with this character.</div>
+      <div id="esl-rank-descs-fields"></div>
+    </div>
+    <!-- TAB: Abilities -->
+    <div id="esl-tab-abilities" style="display:none;">
+      <div style="color:var(--textdim);font-size:12px;margin-bottom:12px;">The passive or combat ability unlocked at each rank. Leave blank for ranks that grant no ability.</div>
+      <div id="esl-abilities-fields"></div>
+    </div>
+    <div class="mrow" style="margin-top:16px;"><button class="mbtn gold" onclick="confirmEditSL()">Save</button><button class="mbtn sec" onclick="closeModal('m-edit-sl')">Cancel</button><button class="mbtn danger" onclick="confirmDeleteSL()">Delete</button></div>
   </div>
 </div>
 
@@ -889,7 +916,12 @@ var selectedItemId = null;
 var selectedQuestId = null;
 var selectedItemOwner = 'party'; // 'party' or character id
 var mobileMode = false;
-var currentPlayerId = null; // logged-in player's character id, or null
+var currentSessionId = null; // logged-in player's session id (account), or null
+function getCurrentCharId() {
+  if (currentSessionId === null) return null;
+  var sess = ST.playerSessions && ST.playerSessions[currentSessionId];
+  return sess && sess.linkedCharId !== null && sess.linkedCharId !== undefined ? sess.linkedCharId : null;
+}
 
 var SOCIAL_LABELS = ['Courage','Knowledge','Diligence','Expression','Understanding'];
 var SOCIAL_RANKS = ['—','Timid','Average','Resolved','Brave','Lionhearted'];
@@ -945,7 +977,7 @@ function toggleEquipStatFieldsEdit() {
 
 var defaultState = {
   items: [], chars: [], slinks: [], quests: [], weaponTypes: [], sheets: {},
-  nextItemId: 1, nextCharId: 1, nextSLId: 1, nextQuestId: 1, nextSheetId: 1,
+  nextItemId: 1, nextCharId: 1, nextSLId: 1, nextQuestId: 1, nextSheetId: 1, nextSessionId: 1,
   skillDescs: {}, playerSessions: {}
 };
 
@@ -1047,81 +1079,117 @@ function toggleMobileLayout() {
 }
 
 // ===== PLAYER SESSIONS (GM creates, players log in) =====
-function refreshSessionCharSelects() {
-  var opts = ST.chars.map(function(c){ return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('');
-  var sessSel = document.getElementById('session-char-select');
-  if (sessSel) sessSel.innerHTML = opts || '<option value="">No characters yet</option>';
-  var loginSel = document.getElementById('player-login-char');
-  if (loginSel) loginSel.innerHTML = opts || '<option value="">No characters yet</option>';
-}
 function renderSessionsList() {
   var el = document.getElementById('sessions-list');
   if (!el) return;
   var keys = Object.keys(ST.playerSessions || {});
-  if (!keys.length) { el.innerHTML = '<div style="color:var(--textdim);font-size:12px;font-style:italic;">No player sessions created yet.</div>'; return; }
+  if (!keys.length) { el.innerHTML = '<div style="color:var(--textdim);font-size:12px;font-style:italic;">No player accounts created yet.</div>'; return; }
+  var charOpts = '<option value="">\u2014 Not linked \u2014</option>' + ST.chars.map(function(c){ return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('');
   var h = '';
-  keys.forEach(function(charId) {
-    var c = ST.chars.find(function(x){ return x.id === parseInt(charId); });
-    var name = c ? c.name : ('Character #' + charId);
-    h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;margin-bottom:4px;">';
-    h += '<span style="font-family:Oswald,sans-serif;font-size:13px;color:var(--text);">' + name + '</span>';
-    h += '<button class="btn sm" onclick="removePlayerSession(' + charId + ')">Remove</button>';
+  keys.forEach(function(sid) {
+    var sess = ST.playerSessions[sid];
+    var selectedCharId = String(sess.linkedCharId || '');
+    h += '<div style="padding:8px 10px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;margin-bottom:6px;">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+    h += '<span style="font-family:Oswald,sans-serif;font-size:13px;color:var(--text);">' + sess.username + '</span>';
+    h += '<button class="btn sm session-remove-btn" data-sid="' + sid + '">Remove</button>';
+    h += '</div>';
+    h += '<div style="display:flex;align-items:center;gap:6px;margin-top:6px;">';
+    h += '<span style="font-size:11px;color:var(--textdim);">Linked character:</span>';
+    var charOptsForSess = '<option value="">\u2014 Not linked \u2014</option>' + ST.chars.map(function(c){
+      return '<option value="' + c.id + '"' + (String(c.id) === selectedCharId ? ' selected' : '') + '>' + c.name + '</option>';
+    }).join('');
+    h += '<select class="minput session-char-link" data-sid="' + sid + '" style="padding:3px 6px;font-size:12px;flex:1;">' + charOptsForSess + '</select>';
+    h += '</div>';
     h += '</div>';
   });
   el.innerHTML = h;
+  // Attach events using data attributes — no escaped onclick strings
+  el.querySelectorAll('.session-remove-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { removePlayerSession(btn.getAttribute('data-sid')); });
+  });
+  el.querySelectorAll('.session-char-link').forEach(function(sel) {
+    sel.addEventListener('change', function() { linkSessionToChar(sel.getAttribute('data-sid'), sel.value); });
+  });
 }
 function setPlayerSession() {
-  var charId = document.getElementById('session-char-select').value;
+  var username = document.getElementById('session-user-input').value.trim();
   var pw = document.getElementById('session-pw-input').value.trim();
-  if (!charId || !pw) return;
+  if (!username || !pw) return;
   if (!ST.playerSessions) ST.playerSessions = {};
-  ST.playerSessions[charId] = pw;
+  var taken = Object.keys(ST.playerSessions).some(function(k){ return ST.playerSessions[k].username.toLowerCase() === username.toLowerCase(); });
+  if (taken) { alert('That username is already taken.'); return; }
+  var sid = 's' + (ST.nextSessionId++);
+  ST.playerSessions[sid] = { username: username, password: pw, linkedCharId: null };
   saveState(); renderSessionsList();
+  document.getElementById('session-user-input').value = '';
   document.getElementById('session-pw-input').value = '';
-  alert('Session saved for that character.');
 }
-function removePlayerSession(charId) {
-  if (!confirm('Remove this player session?')) return;
-  delete ST.playerSessions[charId];
+function linkSessionToChar(sid, charIdStr) {
+  var sess = ST.playerSessions[sid];
+  if (!sess) return;
+  sess.linkedCharId = charIdStr ? parseInt(charIdStr) : null;
   saveState(); renderSessionsList();
+  // Live-update the logged-in player's view if they're the one being linked right now
+  if (currentSessionId === sid) refreshSystemScreen();
+}
+function removePlayerSession(sid) {
+  if (!confirm('Remove this player account? They will no longer be able to log in.')) return;
+  delete ST.playerSessions[sid];
+  if (currentSessionId === sid) { currentSessionId = null; }
+  saveState(); renderSessionsList(); renderAll();
 }
 function doPlayerLogin() {
-  var charId = document.getElementById('player-login-char').value;
+  var username = document.getElementById('player-login-user').value.trim();
   var pw = document.getElementById('player-login-pw').value;
   var err = document.getElementById('player-login-err');
-  if (charId && ST.playerSessions && ST.playerSessions[charId] === pw) {
-    currentPlayerId = parseInt(charId);
-    var c = ST.chars.find(function(x){ return x.id === currentPlayerId; });
+  var foundId = null;
+  Object.keys(ST.playerSessions || {}).forEach(function(sid) {
+    var sess = ST.playerSessions[sid];
+    if (sess.username.toLowerCase() === username.toLowerCase() && sess.password === pw) foundId = sid;
+  });
+  if (foundId) {
+    currentSessionId = foundId;
+    var sess = ST.playerSessions[foundId];
+    var c = ST.chars.find(function(x){ return x.id === sess.linkedCharId; });
     document.getElementById('player-login-panel').style.display = 'none';
     document.getElementById('player-logged-panel').style.display = '';
-    document.getElementById('player-logged-badge').innerHTML = '&#x2726; Logged in as ' + (c ? c.name : 'Player');
+    document.getElementById('player-logged-badge').innerHTML = '&#x2726; Logged in as ' + sess.username;
     document.getElementById('player-login-pw').value = '';
+    document.getElementById('player-login-user').value = '';
     err.classList.remove('show');
     var pi = document.getElementById('player-indicator');
     pi.style.display = '';
-    pi.textContent = '✦ ' + (c ? c.name : 'Player') + ' Session';
+    pi.textContent = '✦ ' + sess.username + (c ? (' (' + c.name + ')') : '');
     renderAll();
   } else {
     err.classList.add('show');
   }
 }
 function logoutPlayer() {
-  currentPlayerId = null;
+  currentSessionId = null;
   document.getElementById('player-login-panel').style.display = '';
   document.getElementById('player-logged-panel').style.display = 'none';
   document.getElementById('player-indicator').style.display = 'none';
   renderAll();
 }
 function refreshSystemScreen() {
-  refreshSessionCharSelects();
   renderSessionsList();
   renderWeaponTypesList();
-  if (currentPlayerId === null) {
+  if (currentSessionId === null) {
     document.getElementById('player-login-panel').style.display = '';
     document.getElementById('player-logged-panel').style.display = 'none';
   } else {
     document.getElementById('player-login-panel').style.display = 'none';
     document.getElementById('player-logged-panel').style.display = '';
+    var sess = ST.playerSessions && ST.playerSessions[currentSessionId];
+    var c = sess ? ST.chars.find(function(x){ return x.id === sess.linkedCharId; }) : null;
+    var infoEl = document.getElementById('player-logged-charinfo');
+    if (infoEl) {
+      infoEl.textContent = c
+        ? ('Linked character: ' + c.name + '. You can edit their equipment and personal inventory.')
+        : 'No character linked to your account yet \u2014 ask your GM, or submit your sheet in the Sheets tab.';
+    }
   }
 }
 
@@ -1180,9 +1248,10 @@ document.querySelectorAll('.modal-bg').forEach(function(m){
 
 // ===== ITEMS =====
 function canEditOwner(ownerKey) {
-  // GM can edit everything. A logged-in player can edit only their own inventory.
+  // GM can edit everything. A logged-in player can edit only their linked character's inventory.
   if (adminMode) return true;
-  if (ownerKey !== 'party' && currentPlayerId !== null && ownerKey === ('char:' + currentPlayerId)) return true;
+  var charId = getCurrentCharId();
+  if (ownerKey !== 'party' && charId !== null && ownerKey === ('char:' + charId)) return true;
   return false;
 }
 function getOwnerItems(ownerKey) {
@@ -1361,7 +1430,7 @@ function selectEquipChar(id) {
   if (!c) return;
   var editBtn = document.getElementById('equip-edit-btn');
   var pickBtn = document.getElementById('equip-pick-btn');
-  var canEditEquip = adminMode || (currentPlayerId !== null && currentPlayerId === id);
+  var canEditEquip = adminMode || (getCurrentCharId() !== null && getCurrentCharId() === id);
   editBtn.style.display = adminMode ? '' : 'none';
   pickBtn.style.display = canEditEquip ? '' : 'none';
   var eq = c.equip || {};
@@ -1573,27 +1642,90 @@ function selectSL(id) {
   if (!sl) return;
   // Background portrait, full-bleed bottom-right
   var bgEl = document.getElementById('sl-bg-img');
-  if (sl.img) {
-    bgEl.style.backgroundImage = "url('" + sl.img.replace(/'/g,"%27") + "')";
-  } else {
-    bgEl.style.backgroundImage = 'none';
-  }
+  bgEl.style.backgroundImage = sl.img ? ("url('" + sl.img.replace(/'/g,"%27") + "')") : 'none';
   document.getElementById('sl-char-name').textContent = sl.locked ? '???' : ('View ' + sl.name + '\u2019s Social Link');
   // Detail panel
   var dp = document.getElementById('sl-detail');
   var di = document.getElementById('sl-detail-inner');
   dp.style.display = 'block';
-  var adminBtns = adminMode
-    ? '<div style="display:flex;gap:6px;margin-top:10px;"><button class="btn gold" onclick="openEditSL(' + id + ')">&#x270E; Edit</button><button class="btn" onclick="adjustSL(' + id + ',-1)">&#x2212; Rank</button><button class="btn" onclick="adjustSL(' + id + ',1)">+ Rank</button></div>'
+
+  // Card image
+  var cardHtml = sl.cardImg
+    ? '<div style="width:80px;min-width:80px;height:120px;border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-right:12px;flex-shrink:0;"><img src="' + sl.cardImg + '" style="width:100%;height:100%;object-fit:cover;"/></div>'
     : '';
-  di.innerHTML = '<div style="font-family:\'Oswald\',sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;">' + (sl.arcana||'') + ' &mdash; ' + sl.persona + '</div>'
+
+  // Rank-specific content
+  var rank = sl.rank || 0;
+  var rankDesc = (sl.rankDescs && sl.rankDescs[rank-1]) ? sl.rankDescs[rank-1] : '';
+  var rankAbility = (sl.rankAbilities && sl.rankAbilities[rank-1]) ? sl.rankAbilities[rank-1] : '';
+  var contextDesc = '';
+  if (rank === 0) contextDesc = '';
+  else if (rank === 10 && sl.desc10) contextDesc = sl.desc10;
+  else if (sl.desc19) contextDesc = sl.desc19;
+
+  var rankHtml = '';
+  if (rank > 0) {
+    rankHtml += '<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">';
+    if (rankDesc) rankHtml += '<div style="font-size:13px;color:var(--text);line-height:1.5;margin-bottom:6px;">' + rankDesc + '</div>';
+    if (contextDesc) rankHtml += '<div style="font-size:12px;color:var(--textdim);font-style:italic;line-height:1.4;margin-bottom:6px;">' + contextDesc + '</div>';
+    if (rankAbility) rankHtml += '<div style="background:rgba(201,168,76,.1);border:1px solid var(--gold);border-radius:2px;padding:6px 10px;font-size:12px;font-family:Oswald,sans-serif;color:var(--gold);margin-top:4px;">&#x2728; ' + rankAbility + '</div>';
+    rankHtml += '</div>';
+  }
+
+  var adminBtns = adminMode
+    ? '<div style="display:flex;gap:6px;margin-top:10px;"><button class="btn gold" data-slid="' + id + '" id="sl-edit-btn">&#x270E; Edit</button><button class="btn" data-slid="' + id + '" id="sl-dec-btn">&#x2212; Rank</button><button class="btn" data-slid="' + id + '" id="sl-inc-btn">+ Rank</button></div>'
+    : '';
+
+  di.innerHTML = '<div style="display:flex;align-items:flex-start;">'
+    + cardHtml
+    + '<div style="flex:1;min-width:0;">'
+    + '<div style="font-family:Oswald,sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;">' + (sl.arcana||'') + ' &mdash; ' + (sl.persona||'') + '</div>'
     + (sl.notes ? '<div style="font-size:13px;color:var(--text);margin-top:6px;line-height:1.5;">' + sl.notes + '</div>' : '')
-    + adminBtns;
+    + rankHtml
+    + adminBtns
+    + '</div></div>';
+
+  // Wire admin buttons with data attributes
+  if (adminMode) {
+    var editBtn = di.querySelector('#sl-edit-btn');
+    var decBtn = di.querySelector('#sl-dec-btn');
+    var incBtn = di.querySelector('#sl-inc-btn');
+    if (editBtn) editBtn.addEventListener('click', function() { openEditSL(parseInt(editBtn.getAttribute('data-slid'))); });
+    if (decBtn) decBtn.addEventListener('click', function() { adjustSL(parseInt(decBtn.getAttribute('data-slid')), -1); });
+    if (incBtn) incBtn.addEventListener('click', function() { adjustSL(parseInt(incBtn.getAttribute('data-slid')), 1); });
+  }
 }
+
 function adjustSL(id, delta) {
   var sl = ST.slinks.find(function(s){ return s.id === id; });
   if (sl) { sl.rank = Math.max(0, Math.min(sl.maxRank||10, sl.rank + delta)); saveState(); selectSL(id); }
 }
+function eslTab(tab, btn) {
+  document.querySelectorAll('#esl-tabs .uniform-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  ['info','ranks','abilities'].forEach(function(t){
+    document.getElementById('esl-tab-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+}
+function buildRankFields(prefix, values, placeholder) {
+  var h = '';
+  for (var i = 1; i <= 10; i++) {
+    var val = (values && values[i-1]) ? values[i-1].replace(/"/g,'&quot;') : '';
+    var label = i === 10 ? 'Rank 10 (Max Bond)' : 'Rank ' + i;
+    h += '<div class="mfield" style="margin-bottom:8px;"><label class="mlabel" style="font-size:10px;">' + label + '</label>';
+    h += '<textarea class="minput" id="' + prefix + i + '" rows="2" style="font-size:13px;" placeholder="' + placeholder + '">' + val + '</textarea></div>';
+  }
+  return h;
+}
+function collectRankFields(prefix) {
+  var arr = [];
+  for (var i = 1; i <= 10; i++) {
+    var el = document.getElementById(prefix + i);
+    arr.push(el ? el.value.trim() : '');
+  }
+  return arr;
+}
+
 function confirmAddSL() {
   var name = document.getElementById('asl-name').value.trim();
   if (!name) return;
@@ -1611,10 +1743,17 @@ function openEditSL(id) {
   document.getElementById('esl-persona').value = sl.persona||'';
   document.getElementById('esl-rank').value = sl.rank;
   document.getElementById('esl-notes').value = sl.notes||'';
+  document.getElementById('esl-desc19').value = sl.desc19||'';
+  document.getElementById('esl-desc10').value = sl.desc10||'';
   document.getElementById('esl-img').value = sl.img||'';
+  document.getElementById('esl-cardimg').value = sl.cardImg||'';
   document.getElementById('esl-locked').value = sl.locked ? '1' : '0';
+  document.getElementById('esl-rank-descs-fields').innerHTML = buildRankFields('esl-rd-', sl.rankDescs||[], 'What happens at this rank...');
+  document.getElementById('esl-abilities-fields').innerHTML = buildRankFields('esl-ab-', sl.rankAbilities||[], 'Ability unlocked at this rank...');
+  eslTab('info', document.querySelector('#esl-tabs .uniform-tab'));
   openModal('m-edit-sl');
 }
+
 function confirmEditSL() {
   var id = parseInt(document.getElementById('esl-id').value);
   var sl = ST.slinks.find(function(s){ return s.id === id; });
@@ -1624,10 +1763,16 @@ function confirmEditSL() {
   sl.persona = document.getElementById('esl-persona').value.trim();
   sl.rank = Math.max(0, Math.min(10, parseInt(document.getElementById('esl-rank').value)||0));
   sl.notes = document.getElementById('esl-notes').value.trim();
+  sl.desc19 = document.getElementById('esl-desc19').value.trim();
+  sl.desc10 = document.getElementById('esl-desc10').value.trim();
   sl.img = document.getElementById('esl-img').value.trim();
+  sl.cardImg = document.getElementById('esl-cardimg').value.trim();
   sl.locked = document.getElementById('esl-locked').value === '1';
+  sl.rankDescs = collectRankFields('esl-rd-');
+  sl.rankAbilities = collectRankFields('esl-ab-');
   saveState(); closeModal('m-edit-sl'); renderSocialLinks(); if (selectedSLId === id) selectSL(id);
 }
+
 function confirmDeleteSL() {
   var id = parseInt(document.getElementById('esl-id').value);
   var sl = ST.slinks.find(function(s){ return s.id === id; });
@@ -1654,7 +1799,9 @@ function selectStatusChar(id) {
   selectedStatusChar = id;
   var c = ST.chars.find(function(x){ return x.id === id; });
   renderStatusList();
-  if (!c) return;
+  var hpspCol = document.getElementById('status-hpsp-col');
+  if (!c) { hpspCol.style.width = '0'; hpspCol.style.minWidth = '0'; return; }
+  hpspCol.style.width = '280px'; hpspCol.style.minWidth = '280px';
   // Background portrait, full-bleed bottom-right
   var bgEl = document.getElementById('status-bg-img');
   if (c.img) {
@@ -1831,8 +1978,9 @@ function confirmAddChar() {
   var sp = parseInt(document.getElementById('ac-sp').value)||70;
   var socRaw = document.getElementById('ac-socials').value.split(',').map(function(v){ return Math.min(5,Math.max(1,parseInt(v.trim())||1)); });
   while (socRaw.length < 5) socRaw.push(1);
+  var newId = ST.nextCharId++;
   ST.chars.push({
-    id: ST.nextCharId++, name: name, arcana: document.getElementById('ac-arcana').value.trim(),
+    id: newId, name: name, arcana: document.getElementById('ac-arcana').value.trim(),
     role: document.getElementById('ac-role').value.trim(), persona: document.getElementById('ac-persona').value.trim(),
     weaponType: document.getElementById('ac-weapontype').value,
     lv: parseInt(document.getElementById('ac-lv').value)||1, exp: parseInt(document.getElementById('ac-exp').value)||100,
@@ -1844,6 +1992,14 @@ function confirmAddChar() {
     equip: {weapon:'',weaponAtk:0,weaponHit:0,weaponEffect:'',armor:'',armorDef:0,armorEva:0,armorEffect:'',acc:'',accEffect:'',clothes:'',clothesEffect:''}, inventory: [],
     fromSheetId: window.__pendingSheetId || null
   });
+  // If this character was created from a submitted sheet, auto-link that player's
+  // account to the new character so the GM doesn't have to do it as a separate step.
+  if (window.__pendingSheetId) {
+    var sid = window.__pendingSheetId.replace('session_', '');
+    if (ST.playerSessions && ST.playerSessions[sid]) {
+      ST.playerSessions[sid].linkedCharId = newId;
+    }
+  }
   window.__pendingSheetId = null;
   saveState(); closeModal('m-add-char'); renderAll();
   ['ac-name','ac-arcana','ac-role','ac-persona','ac-notes','ac-img','ac-socials'].forEach(function(id){ document.getElementById(id).value = ''; });
@@ -2026,7 +2182,7 @@ function confirmDeleteChar() {
   var c = ST.chars.find(function(x){ return x.id === id; });
   if (!c || !confirm('Delete ' + c.name + '?')) return;
   ST.chars = ST.chars.filter(function(x){ return x.id !== id; });
-  if (selectedStatusChar === id) { selectedStatusChar = null; document.getElementById('status-bg-img').style.backgroundImage = 'none'; document.getElementById('status-char-name').textContent = 'View whose status?'; document.getElementById('status-char-hpsp').innerHTML = ''; document.getElementById('status-char-detail').style.display = 'none'; }
+  if (selectedStatusChar === id) { selectedStatusChar = null; document.getElementById('status-bg-img').style.backgroundImage = 'none'; document.getElementById('status-char-name').textContent = 'View whose status?'; document.getElementById('status-char-hpsp').innerHTML = ''; document.getElementById('status-char-detail').style.display = 'none'; var hc=document.getElementById('status-hpsp-col'); hc.style.width='0'; hc.style.minWidth='0'; }
   if (selectedEquipChar === id) { selectedEquipChar = null; document.getElementById('equip-slots-area').innerHTML = '<div style="color:var(--textdim);font-style:italic;font-size:14px;padding:20px;">Select a character to view equipment.</div>'; }
   saveState(); closeModal('m-edit-char'); renderAll();
 }
@@ -2139,7 +2295,7 @@ var sheetsGmViewKey = null; // which session key the GM is currently viewing, if
 
 function sheetKeyFor(sessionId) { return 'session_' + sessionId; }
 
-function renderSheetsScreen() {
+function renderSheetsScreen(forceRefresh) {
   var el = document.getElementById('sheets-content');
   if (!el) return;
 
@@ -2148,18 +2304,26 @@ function renderSheetsScreen() {
     return;
   }
 
-  if (currentPlayerId === null) {
-    el.innerHTML = '<div style="color:var(--textdim);font-size:14px;padding:20px 0;">Log in from the <b style="color:var(--gold);">System</b> tab with your player session to view or submit your character sheet.</div>';
+  if (currentSessionId === null) {
+    el.innerHTML = '<div style="color:var(--textdim);font-size:14px;padding:20px 0;">Log in from the <b style="color:var(--gold);">System</b> tab with your player account to view or submit your character sheet.</div>';
     return;
   }
 
-  var key = sheetKeyFor(currentPlayerId);
+  var key = sheetKeyFor(currentSessionId);
   var sheet = ST.sheets && ST.sheets[key];
+
   if (sheet && sheet.submitted) {
     el.innerHTML = renderSheetReadOnly(sheet);
-  } else {
-    el.innerHTML = renderSheetForm(key, sheet);
+    return;
   }
+
+  // Don't rebuild the form if it's already rendered and the user hasn't submitted —
+  // rebuilding would discard anything they've typed. Only build it for the first time
+  // or after an explicit force-refresh (e.g. after submission).
+  var alreadyHasForm = el.querySelector('#sf-name') !== null;
+  if (!forceRefresh && alreadyHasForm) return;
+
+  renderSheetForm(el, key, sheet);
 }
 
 function renderSheetsGmView(el) {
@@ -2173,7 +2337,10 @@ function renderSheetsGmView(el) {
     keys.forEach(function(k) {
       var sh = ST.sheets[k];
       var sel = sheetsGmViewKey === k ? ' selected topsel' : '';
-      h += '<div class="char-row' + sel + '" style="text-align:left;" onclick="gmViewSheet(\'' + k + '\')">' + (sh.name || 'Unnamed') + (sh.submitted ? '' : ' <span style="color:var(--textdim);font-size:11px;">(draft)</span>') + '</div>';
+      var sessId = k.replace('session_', '');
+      var sess = ST.playerSessions && ST.playerSessions[sessId];
+      var byUser = sess ? (' \u2014 ' + sess.username) : '';
+      h += '<div class="char-row' + sel + '" style="text-align:left;" onclick="gmViewSheet(\'' + k + '\')">' + (sh.name || 'Unnamed') + '<span style="color:var(--textdim);font-size:11px;">' + byUser + '</span>' + (sh.submitted ? '' : ' <span style="color:var(--textdim);font-size:11px;">(draft)</span>') + '</div>';
     });
     h += '</div>';
   }
@@ -2190,7 +2357,7 @@ function gmViewSheet(key) {
   renderSheetsScreen();
 }
 
-function renderSheetForm(key, existing) {
+function renderSheetForm(el, key, existing) {
   var d = existing || {};
   var h = '<div style="color:var(--textdim);font-size:13px;margin-bottom:16px;">Fill this out once. After you submit, only the GM can make further edits.</div>';
   h += '<div class="mfield"><label class="mlabel">Character Name</label><input class="minput" id="sf-name" value="' + (d.name||'').replace(/"/g,'&quot;') + '"/></div>';
@@ -2206,8 +2373,15 @@ function renderSheetForm(key, existing) {
   h += '&#x26A0; <b>Do not submit a backstory here</b> \u2014 and do not write anything in the box below \u2014 unless your backstory has already been discussed and confirmed with the GM.';
   h += '</div>';
   h += '<div class="mfield"><label class="mlabel">Backstory</label><textarea class="minput" id="sf-backstory" rows="6">' + (d.backstory||'') + '</textarea></div>';
-  h += '<div class="mrow"><button class="mbtn gold" onclick="submitSheet(\'' + key + '\')">Submit Sheet (final \u2014 cannot edit after)</button>' + (existing ? '<button class="mbtn sec" onclick="saveSheetDraft(\'' + key + '\')">Save Draft</button>' : '') + '</div>';
-  return h;
+  h += '<div class="mrow">';
+  h += '<button class="mbtn gold" id="sf-submit-btn">Submit Sheet (final \u2014 cannot edit after)</button>';
+  if (existing) h += '<button class="mbtn sec" id="sf-draft-btn">Save Draft</button>';
+  h += '</div>';
+  el.innerHTML = h;
+  var submitBtn = el.querySelector('#sf-submit-btn');
+  if (submitBtn) submitBtn.addEventListener('click', function() { doSubmitSheet(key); });
+  var draftBtn = el.querySelector('#sf-draft-btn');
+  if (draftBtn) draftBtn.addEventListener('click', function() { doSaveSheetDraft(key); });
 }
 
 function collectSheetFormData() {
@@ -2222,23 +2396,22 @@ function collectSheetFormData() {
     backstory: document.getElementById('sf-backstory').value.trim()
   };
 }
-function saveSheetDraft(key) {
+function doSaveSheetDraft(key) {
   if (!ST.sheets) ST.sheets = {};
   var data = collectSheetFormData();
   data.submitted = false;
   ST.sheets[key] = data;
   saveState();
-  alert('Draft saved. You can keep editing until you submit.');
+  alert('Draft saved. Come back here to continue editing or submit.');
 }
-function submitSheet(key) {
-  if (!confirm('Submit this sheet? You will not be able to edit it yourself afterward \u2014 only the GM can.')) return;
+function doSubmitSheet(key) {
   if (!ST.sheets) ST.sheets = {};
   var data = collectSheetFormData();
-  if (!data.name) { alert('Please enter a character name.'); return; }
+  if (!data.name) { alert('Please enter a character name before submitting.'); return; }
   data.submitted = true;
   ST.sheets[key] = data;
   saveState();
-  renderSheetsScreen();
+  renderSheetsScreen(true);
 }
 
 function renderSheetReadOnly(sheet, gmMode, key) {
@@ -2266,7 +2439,9 @@ function renderSheetReadOnly(sheet, gmMode, key) {
 
 function gmEditSheet(key) {
   var sheet = ST.sheets[key];
-  document.getElementById('sheets-gm-detail').innerHTML = renderSheetForm(key, sheet);
+  var el = document.getElementById('sheets-gm-detail');
+  el.innerHTML = '';
+  renderSheetForm(el, key, sheet);
 }
 function useSheetForNewChar(key) {
   showScreen('status');
